@@ -15,10 +15,14 @@
  */
 package com.example.android.sunshine;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.utilities.NetworkUtils;
@@ -97,12 +101,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // TODO (2) Create a menu resource in res/menu/ called forecast.xml
-    // TODO (3) Add one item to the menu with an ID of action_refresh
-    // TODO (4) Set the title of the menu item to "Refresh" using strings.xml
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.forecast, menu);
+        return true;
+    }
 
-    // TODO (5) Override onCreateOptionsMenu to inflate the menu for this Activity
-    // TODO (6) Return true to display the menu
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_refresh) {
+            Context context = MainActivity.this;
+            Toast.makeText(context, "Refresh Clicked", Toast.LENGTH_SHORT).show();
+            loadWeatherData();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-    // TODO (7) Override onOptionsItemSelected to handle clicks on the refresh button
+    // COMPLETE (2) Create a menu resource in res/menu/ called forecast.xml
+    // COMPLETE (3) Add one item to the menu with an ID of action_refresh
+    // COMPLETE (4) Set the title of the menu item to "Refresh" using strings.xml
+
+    // COMPLETE (5) Override onCreateOptionsMenu to inflate the menu for this Activity
+    // COMPLETE (6) Return true to display the menu
+
+    // COMPLETE (7) Override onOptionsItemSelected to handle clicks on the refresh button
 }
