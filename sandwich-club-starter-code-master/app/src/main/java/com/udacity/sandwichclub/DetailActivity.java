@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,6 +59,8 @@ public class DetailActivity extends AppCompatActivity {
         populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher_round)
                 .into(imageIV);
 
         setTitle(sandwich.getMainName());
@@ -69,23 +72,28 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI(Sandwich sandwich) {
-        mDescriptionTV.setText(sandwich.getDescription());
+        String description;
+        if (!(description = sandwich.getDescription()).equals("")) {
+            mDescriptionTV.setText(description);
+        }
         mDescriptionTV.append("\n");
 
-        mOriginTV.setText(sandwich.getPlaceOfOrigin());
+        String origin;
+        if (!(origin = sandwich.getPlaceOfOrigin()).equals("")) {
+            mOriginTV.setText(origin);
+        }
         mOriginTV.append("\n");
 
-        List<String> alsoKnownAs = sandwich.getAlsoKnownAs();
-
-        for (String s: alsoKnownAs) {
-            mAlsoKnownTV.append(s);
-            mAlsoKnownTV.append("\n");
+        List<String> alsoKnownAs;
+        if (!(alsoKnownAs = sandwich.getAlsoKnownAs()).isEmpty()) {
+            mAlsoKnownTV.setText(TextUtils.join(", ", alsoKnownAs));
         }
+        mAlsoKnownTV.append("\n");
 
-        List<String> ingredients = sandwich.getIngredients();
-        for (String s: ingredients) {
-            mIngredientsTV.append(s);
-            mIngredientsTV.append("\n");
+        List<String> ingredients;
+        if (!(ingredients = sandwich.getIngredients()).isEmpty()) {
+            mIngredientsTV.setText(TextUtils.join(", ", ingredients));
         }
+        mIngredientsTV.append("\n");
     }
 }
