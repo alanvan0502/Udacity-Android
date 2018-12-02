@@ -15,7 +15,10 @@
  */
 package com.example.android.recyclerview;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -32,21 +35,44 @@ import android.widget.TextView;
  * If you don't like our puns, we named this Adapter GreenAdapter because its
  * contents are green.
  */
-// TODO (4) From GreenAdapter, extend RecyclerView.Adapter<NumberViewHolder>
-public class GreenAdapter {
+// COMPLETE (4) From GreenAdapter, extend RecyclerView.Adapter<NumberViewHolder>
+public class GreenAdapter extends RecyclerView.Adapter<GreenAdapter.NumberViewHolder> {
 
-    // TODO (1) Add a private int variable called mNumberItems
+    // COMPLETE (1) Add a private int variable called mNumberItems
+    private int mNumberItems;
+    // COMPLETE (2) Create a constructor for GreenAdapter that accepts an int as a parameter for numberOfItems
+    public GreenAdapter(int numberItems) {
+        mNumberItems = numberItems;
+    }
 
-    // TODO (2) Create a constructor for GreenAdapter that accepts an int as a parameter for numberOfItems
-    // TODO (3) Store the numberOfItems parameter in mNumberItems
+    @NonNull
+    @Override
+    public NumberViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        Context context = viewGroup.getContext();
+        int layoutIdForListItem = R.layout.number_list_item;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
+        return new NumberViewHolder(view);
+    }
 
-    // TODO (5) Override the onCreateViewHolder method
-    // TODO (6) Create and return a new NumberViewHolder within this method
+    @Override
+    public void onBindViewHolder(@NonNull NumberViewHolder numberViewHolder, int i) {
+        numberViewHolder.bind(i);
+    }
 
-    // TODO (7) Override onBindViewHolder
-    // TODO (8) Within onBindViewHolder, call holder.bind and pass in the position
+    @Override
+    public int getItemCount() {
+        return mNumberItems;
+    }
+    // COMPLETE (3) Store the numberOfItems parameter in mNumberItems
 
-    // TODO (9) Override getItemCount and return the number of items to display
+    // COMPLETE (5) Override the onCreateViewHolder method
+    // COMPLETE (6) Create and return a new NumberViewHolder within this method
+
+    // COMPLETE (7) Override onBindViewHolder
+    // COMPLETE (8) Within onBindViewHolder, call holder.bind and pass in the position
+
+    // COMPLETE (9) Override getItemCount and return the number of items to display
 
     /**
      * Cache of the children views for a list item.
@@ -65,7 +91,6 @@ public class GreenAdapter {
          */
         public NumberViewHolder(View itemView) {
             super(itemView);
-
             listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_number);
         }
 

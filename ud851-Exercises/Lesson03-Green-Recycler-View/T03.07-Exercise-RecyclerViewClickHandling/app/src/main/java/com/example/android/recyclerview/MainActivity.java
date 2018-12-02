@@ -21,9 +21,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-// TODO (8) Implement GreenAdapter.ListItemClickListener from the MainActivity
-public class MainActivity extends AppCompatActivity {
+import com.example.android.recyclerview.GreenAdapter.ListItemClickListener;
+
+// COMPLETE (8) Implement GreenAdapter.ListItemClickListener from the MainActivity
+public class MainActivity extends AppCompatActivity implements ListItemClickListener {
 
     private static final int NUM_LIST_ITEMS = 100;
 
@@ -33,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private GreenAdapter mAdapter;
     private RecyclerView mNumbersList;
-
-    // TODO (9) Create a Toast variable called mToast to store the current Toast
+    private Toast mCurrentToast;
+    // COMPLETE (9) Create a Toast variable called mToast to store the current Toast
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
          */
         mNumbersList.setHasFixedSize(true);
 
-        // TODO (13) Pass in this as the ListItemClickListener to the GreenAdapter constructor
+        // COMPLETE (13) Pass in this as the ListItemClickListener to the GreenAdapter constructor
         /*
          * The GreenAdapter is responsible for displaying each item in the list.
          */
-        mAdapter = new GreenAdapter(NUM_LIST_ITEMS);
+        mAdapter = new GreenAdapter(this, NUM_LIST_ITEMS);
         mNumbersList.setAdapter(mAdapter);
     }
 
@@ -94,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
              * ways. (in our humble opinion)
              */
             case R.id.action_refresh:
-                // TODO (14) Pass in this as the ListItemClickListener to the GreenAdapter constructor
-                mAdapter = new GreenAdapter(NUM_LIST_ITEMS);
+                // COMPLETE (14) Pass in this as the ListItemClickListener to the GreenAdapter constructor
+                mAdapter = new GreenAdapter(this, NUM_LIST_ITEMS);
                 mNumbersList.setAdapter(mAdapter);
                 return true;
         }
@@ -103,7 +106,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // TODO (10) Override ListItemClickListener's onListItemClick method
-    // TODO (11) In the beginning of the method, cancel the Toast if it isn't null
-    // TODO (12) Show a Toast when an item is clicked, displaying that item number that was clicked
+    @Override
+    public void onListItemClick(int param) {
+        if (mCurrentToast != null) {
+            mCurrentToast.cancel();
+        }
+        Toast.makeText(this, "Item clicked " + param, Toast.LENGTH_SHORT).show();
+    }
+
+    // COMPLETE (10) Override ListItemClickListener's onListItemClick method
+    // COMPLETE (11) In the beginning of the method, cancel the Toast if it isn't null
+    // COMPLETE (12) Show a Toast when an item is clicked, displaying that item number that was clicked
 }
