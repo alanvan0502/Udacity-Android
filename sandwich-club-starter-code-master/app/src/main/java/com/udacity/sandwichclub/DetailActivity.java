@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity {
 
         populateUI(sandwich);
         Picasso.with(this)
-                .load(sandwich.getImage())
+                .load("https://image.tmdb.org/t/p/w185//2uNW4WbgBXL25BAbXGLnLqX71Sw.jpg")
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher_round)
                 .into(imageIV);
