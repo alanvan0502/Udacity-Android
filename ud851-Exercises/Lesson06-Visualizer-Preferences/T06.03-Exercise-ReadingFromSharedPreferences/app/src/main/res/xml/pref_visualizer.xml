@@ -9,4 +9,23 @@
         android:summaryOn="Shown"
         android:title="Show Bass" />
 
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="show_mid"
+        android:summaryOff="Hidden"
+        android:summaryOn="Shown"
+        android:title="Show Mid" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="show_treble"
+        android:summaryOff="Hidden"
+        android:summaryOn="Shown"
+        android:title="Show Treble" />
+
+    <EditTextPreference
+        android:defaultValue="1"
+        android:key="size"
+        android:title="Size Multiplier"/>
+
 </PreferenceScreen>

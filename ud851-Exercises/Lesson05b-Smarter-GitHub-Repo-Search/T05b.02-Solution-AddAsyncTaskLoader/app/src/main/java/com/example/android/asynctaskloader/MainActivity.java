@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements
     private EditText mSearchBoxEditText;
 
     private TextView mUrlDisplayTextView;
+
     private TextView mSearchResultsTextView;
 
     private TextView mErrorMessageDisplay;
