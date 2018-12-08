@@ -31,3 +31,5 @@
         android:title="@string/pref_color_label" />
 
 </PreferenceScreen>
+
+

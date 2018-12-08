@@ -27,8 +27,11 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.widget.Toast;
 
+import java.util.List;
+
 // TODO (1) Implement OnSharedPreferenceChangeListener
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat
+        implements OnSharedPreferenceChangeListener {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -39,6 +42,52 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         // TODO (3) Get the preference screen, get the number of preferences and iterate through
         // all of the preferences if it is not a checkbox preference, call the setSummary method
         // passing in a preference and the value of the preference
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        SharedPreferences sharedPreferences = preferenceScreen.getSharedPreferences();
+        int count = preferenceScreen.getPreferenceCount();
+        for (int i = 0; i < count; i++) {
+            Preference p = preferenceScreen.getPreference(i);
+            if (!(p instanceof CheckBoxPreference)) {
+                String value = sharedPreferences.getString(p.getKey(), "");
+                setPreferenceSummary(p, value);
+            }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Preference p = findPreference(key);
+        if (p != null) {
+            if (!(p instanceof CheckBoxPreference)) {
+                String value = sharedPreferences.getString(p.getKey(), "");
+                setPreferenceSummary(p, value);
+            }
+        }
+    }
+
+    private void setPreferenceSummary(Preference preference, String value) {
+        if (preference instanceof ListPreference) {
+            ListPreference pref = (ListPreference) preference;
+            int index = pref.findIndexOfValue(value);
+            if (index >= 0) {
+                CharSequence label = pref.getEntries()[index];
+                pref.setSummary(label);
+            }
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
     }
 
     // TODO (4) Override onSharedPreferenceChanged and, if it is not a checkbox preference,

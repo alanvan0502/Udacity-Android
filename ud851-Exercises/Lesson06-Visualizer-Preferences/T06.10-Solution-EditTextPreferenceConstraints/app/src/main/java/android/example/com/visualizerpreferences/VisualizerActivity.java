@@ -28,6 +28,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,6 +52,7 @@ public class VisualizerActivity extends AppCompatActivity implements SharedPrefe
     private void setupSharedPreferences() {
         // Get all of the values from shared preferences to set it up
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         mVisualizerView.setShowBass(sharedPreferences.getBoolean(getString(R.string.pref_show_bass_key),
                 getResources().getBoolean(R.bool.pref_show_bass_default)));
         mVisualizerView.setShowMid(sharedPreferences.getBoolean(getString(R.string.pref_show_mid_range_key),
@@ -72,6 +74,7 @@ public class VisualizerActivity extends AppCompatActivity implements SharedPrefe
     private void loadSizeFromSharedPreferences(SharedPreferences sharedPreferences) {
         float minSize = Float.parseFloat(sharedPreferences.getString(getString(R.string.pref_size_key),
                 getString(R.string.pref_size_default)));
+        Log.d("min size", String.valueOf(minSize));
         mVisualizerView.setMinSizeScale(minSize);
     }
 

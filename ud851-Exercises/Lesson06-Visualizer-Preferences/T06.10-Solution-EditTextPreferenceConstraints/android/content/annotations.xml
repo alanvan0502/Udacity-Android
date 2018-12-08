@@ -1,0 +1,8 @@
+<root>
+    <item
+        name='android.content.SharedPreferences java.lang.String getString(java.lang.String, java.lang.String)'>
+        <annotation name='org.jetbrains.annotations.Contract'>
+            <val val="&quot;_,!null-&gt;!null&quot;" />
+        </annotation>
+    </item>
+</root>

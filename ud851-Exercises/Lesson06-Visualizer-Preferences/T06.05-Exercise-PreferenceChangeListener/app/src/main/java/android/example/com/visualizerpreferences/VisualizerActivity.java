@@ -34,7 +34,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 // TODO (1) Implement OnSharedPreferenceChangeListener
-public class VisualizerActivity extends AppCompatActivity {
+public class VisualizerActivity
+        extends AppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE = 88;
     private VisualizerView mVisualizerView;
@@ -51,18 +53,41 @@ public class VisualizerActivity extends AppCompatActivity {
 
     private void setupSharedPreferences() {
         // Get all of the values from shared preferences to set it up
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mVisualizerView.setShowBass(sharedPreferences.getBoolean(getString(R.string.pref_show_bass_key),
-                getResources().getBoolean(R.bool.pref_show_bass_default)));
-        mVisualizerView.setShowMid(true);
-        mVisualizerView.setShowTreble(true);
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        mVisualizerView.
+                setShowBass(sharedPreferences.getBoolean(getString(R.string.pref_show_bass_key),
+                        getResources().getBoolean(R.bool.pref_show_bass_default)));
+        mVisualizerView.
+                setShowMid(sharedPreferences.getBoolean(getString(R.string.pref_show_mid_key),
+                        getResources().getBoolean(R.bool.pref_show_mid_default)));
+        mVisualizerView.
+                setShowTreble(sharedPreferences.getBoolean(getString(R.string.pref_show_treble_key),
+                        getResources().getBoolean(R.bool.pref_show_treble_default)));
         mVisualizerView.setMinSizeScale(1);
-        mVisualizerView.setColor(getString(R.string.pref_color_red_value));
+
+        loadColorFromPreference(sharedPreferences);
+
         // TODO (3) Register the listener
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void loadColorFromPreference(SharedPreferences sharedPreferences) {
+        mVisualizerView.setColor
+                (sharedPreferences.getString(getString(R.string.pref_color_key),
+                        getResources().getString(R.string.pref_color_default)));
     }
 
     // TODO (2) Override the onSharedPreferenceChanged method and update the show bass preference
     // TODO (4) Override onDestroy and unregister the listener
+
+    @Override
+    protected void onDestroy() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
+    }
 
     /**
      * Methods for setting up the menu
@@ -150,6 +175,22 @@ public class VisualizerActivity extends AppCompatActivity {
             }
             // Other permissions could go down here
 
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_show_bass_key))) {
+            mVisualizerView.setShowBass(sharedPreferences.getBoolean
+                    (key, getResources().getBoolean(R.bool.pref_show_bass_default)));
+        } else if (key.equals(getString(R.string.pref_show_mid_key))) {
+            mVisualizerView.setShowMid(sharedPreferences.getBoolean
+                    (key, getResources().getBoolean(R.bool.pref_show_mid_default)));
+        } else if (key.equals(getString(R.string.pref_show_treble_key))) {
+            mVisualizerView.setShowTreble(sharedPreferences.getBoolean
+                    (key, getResources().getBoolean(R.bool.pref_show_treble_default)));
+        } else if (key.equals(getString(R.string.pref_color_key))) {
+            loadColorFromPreference(sharedPreferences);
         }
     }
 }
