@@ -16,10 +16,18 @@
 
 package com.udacity.example.quizexample;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+
+import com.udacity.example.droidtermsprovider.DroidTermsExampleContract;
 
 /**
  * Gets the data from the ContentProvider and shows a series of flash cards.
@@ -30,7 +38,13 @@ public class MainActivity extends AppCompatActivity {
     // The current state of the app
     private int mCurrentState;
 
-    // TODO (3) Create an instance variable storing a Cursor called mData
+    private TextView mWordTv;
+    private TextView mDefinitionTv;
+    private int wordColumn;
+    private int defColumn;
+
+    private Cursor mData;
+
     private Button mButton;
 
     // This state is when the word definition is hidden and clicking the button will therefore
@@ -49,8 +63,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the views
         mButton = (Button) findViewById(R.id.button_next);
+        mWordTv = findViewById(R.id.text_view_word);
+        mDefinitionTv = findViewById(R.id.text_view_definition);
 
-        // TODO (5) Create and execute your AsyncTask here
+        new ContentAsyncTask(this, mWordTv, mDefinitionTv).execute();
+    }
+
+    public void updateCursorData(Cursor data) {
+        mData = data;
+
+        mData.moveToFirst();
+        wordColumn = mData.getColumnIndex(DroidTermsExampleContract.COLUMN_WORD);
+        defColumn = mData.getColumnIndex(DroidTermsExampleContract.COLUMN_DEFINITION);
+        mCurrentState = STATE_SHOWN;
     }
 
     /**
@@ -58,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
      * two app states.
      * @param view The view that was clicked
      */
-    public void onButtonClick(View view) {
+    public void onButtonClick (View view){
 
         // Either show the definition of the current word, or if the definition is currently
         // showing, move to the next word.
@@ -72,22 +97,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void nextWord() {
+    public void nextWord () {
+        if (mData != null) {
+            if (!mData.moveToNext()) {
+                mData.moveToFirst();
+            }
 
-        // Change button text
-        mButton.setText(getString(R.string.show_definition));
+            mDefinitionTv.setVisibility(View.INVISIBLE);
+            mButton.setText(getString(R.string.show_definition));
+            mWordTv.setText(mData.getString(wordColumn));
+            mDefinitionTv.setText(mData.getString(defColumn));
 
-        mCurrentState = STATE_HIDDEN;
+            mCurrentState = STATE_HIDDEN;
+        }
 
     }
 
-    public void showDefinition() {
+    public void showDefinition () {
+        if (mData != null) {
+            mDefinitionTv.setVisibility(View.VISIBLE);
+            mButton.setText(getString(R.string.next_word));
+            mCurrentState = STATE_SHOWN;
+        }
+    }
 
-        // Change button text
-        mButton.setText(getString(R.string.next_word));
-
-        mCurrentState = STATE_SHOWN;
-
+    @Override
+    protected void onDestroy() {
+        if (mData != null)
+            mData.close();
+        super.onDestroy();
     }
 
     // TODO (1) Create AsyncTask with the following generic types <Void, Void, Cursor>

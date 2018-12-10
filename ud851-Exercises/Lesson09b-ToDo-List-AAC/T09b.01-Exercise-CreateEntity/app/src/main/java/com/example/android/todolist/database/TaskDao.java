@@ -13,9 +13,8 @@ import java.util.List;
 @Dao
 public interface TaskDao {
 
-    // COMPLETE (2) Wrap the return type with LiveData
     @Query("SELECT * FROM task ORDER BY priority")
-    LiveData<List<TaskEntry>> loadAllTasks();
+    List<TaskEntry> loadAllTasks();
 
     @Insert
     void insertTask(TaskEntry taskEntry);
@@ -26,6 +25,5 @@ public interface TaskDao {
     @Delete
     void deleteTask(TaskEntry taskEntry);
 
-    @Query("SELECT * FROM task WHERE id = :id")
-    TaskEntry loadTaskById(int id);
 }
+
