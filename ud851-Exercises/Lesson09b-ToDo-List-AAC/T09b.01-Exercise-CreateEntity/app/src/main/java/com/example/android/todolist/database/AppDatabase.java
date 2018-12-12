@@ -25,7 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
 //                        // Queries should always be done in a separate thread to avoid locking
 //                        // the UI. This is allowed ONLY TEMPORARILY to check if the DB is working.
-//                        .allowMainThreadQueries()
+                        .allowMainThreadQueries()
                         .build();
             }
         }
