@@ -11,10 +11,12 @@ class AddTaskViewModel extends ViewModel {
 
     // COMPLETE (6) Add a task member variable for the TaskEntry object wrapped in a LiveData
     private final LiveData<TaskEntry> mTask;
+    private final TaskRepository mRepository;
     // COMPLETE (8) Create a constructor where you call loadTaskById of the taskDao to initialize the tasks variable
     // Note: The constructor should receive the database and the taskId
     AddTaskViewModel(TaskRepository repository, int taskId) {
-        mTask = repository.getTaskById(taskId);
+        this.mRepository = repository;
+        mTask = mRepository.getTaskById(taskId);
     }
 
     // COMPLETE (7) Create a getter for the task variable

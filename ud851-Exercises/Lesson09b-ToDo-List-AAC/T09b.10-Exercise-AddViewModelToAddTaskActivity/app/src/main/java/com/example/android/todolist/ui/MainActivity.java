@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.ItemC
 
         repository = InjectorUtils.provideRepository(this);
         setupViewModel();
+        Log.d("Main Activity", "Main Activity Created");
     }
 
     private void setupViewModel() {

@@ -57,7 +57,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private int mTaskId = DEFAULT_TASK_ID;
 
-    // Member variable for the Database
+    // Member variable for the Repository
     private TaskRepository repository;
 
     protected void onCreate(Bundle savedInstanceState) {

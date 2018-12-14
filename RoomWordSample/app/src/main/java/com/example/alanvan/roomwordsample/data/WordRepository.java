@@ -30,11 +30,19 @@ public class WordRepository {
         return sInstance;
     }
 
-    public synchronized LiveData<List<WordEntry>> getAllTasks() {
+    public synchronized LiveData<List<WordEntry>> getAllWords() {
         return mWords;
     }
 
     public synchronized void insertWord(WordEntry word) {
         mWordDao.insertWord(word);
+    }
+
+    public synchronized void deleteAll() {
+        mWordDao.deleteAll();
+    }
+
+    public void deleteWord(WordEntry word) {
+        mWordDao.deleteWord(word);
     }
 }
