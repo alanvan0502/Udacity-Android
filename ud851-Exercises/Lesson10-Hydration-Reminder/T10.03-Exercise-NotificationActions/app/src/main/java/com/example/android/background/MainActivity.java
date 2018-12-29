@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.background.sync.ReminderTasks;
+import com.example.android.background.sync.ReminderUtilities;
 import com.example.android.background.sync.WaterReminderIntentService;
 import com.example.android.background.utilities.NotificationUtils;
 import com.example.android.background.utilities.PreferenceUtilities;
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private TextView mWaterCountDisplay;
     private TextView mChargingCountDisplay;
-    private ImageView mChargingImageView;
 
     private Toast mToast;
 
@@ -47,11 +47,13 @@ public class MainActivity extends AppCompatActivity implements
         /** Get the views **/
         mWaterCountDisplay = (TextView) findViewById(R.id.tv_water_count);
         mChargingCountDisplay = (TextView) findViewById(R.id.tv_charging_reminder_count);
-        mChargingImageView = (ImageView) findViewById(R.id.iv_power_increment);
+        ImageView mChargingImageView = (ImageView) findViewById(R.id.iv_power_increment);
 
         /** Set the original values in the UI **/
         updateWaterCount();
         updateChargingReminderCount();
+
+        ReminderUtilities.scheduleChargingReminder(this);
 
         /** Setup the shared preference listener **/
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -90,11 +92,6 @@ public class MainActivity extends AppCompatActivity implements
         startService(incrementWaterCountIntent);
     }
 
-    
-    public void testNotification(View view) {
-        NotificationUtils.remindUserBecauseCharging(this);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -114,5 +111,9 @@ public class MainActivity extends AppCompatActivity implements
         } else if (PreferenceUtilities.KEY_CHARGING_REMINDER_COUNT.equals(key)) {
             updateChargingReminderCount();
         }
+    }
+
+    public void resetCount(View view) {
+        PreferenceUtilities.resetWaterCount(this);
     }
 }

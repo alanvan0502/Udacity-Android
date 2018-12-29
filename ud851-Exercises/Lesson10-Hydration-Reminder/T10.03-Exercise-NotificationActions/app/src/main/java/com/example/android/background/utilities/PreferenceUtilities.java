@@ -38,8 +38,15 @@ public final class PreferenceUtilities {
 
     public static int getWaterCount(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int glassesOfWater = prefs.getInt(KEY_WATER_COUNT, DEFAULT_COUNT);
-        return glassesOfWater;
+        return prefs.getInt(KEY_WATER_COUNT, DEFAULT_COUNT);
+    }
+
+    synchronized public static void resetWaterCount(Context context) {
+        PreferenceUtilities.setWaterCount(context, DEFAULT_COUNT);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(KEY_CHARGING_REMINDER_COUNT, DEFAULT_COUNT);
+        editor.apply();
     }
 
     synchronized public static void incrementWaterCount(Context context) {
@@ -58,7 +65,6 @@ public final class PreferenceUtilities {
 
     public static int getChargingReminderCount(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int chargingReminders = prefs.getInt(KEY_CHARGING_REMINDER_COUNT, DEFAULT_COUNT);
-        return chargingReminders;
+        return prefs.getInt(KEY_CHARGING_REMINDER_COUNT, DEFAULT_COUNT);
     }
 }
